@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "939975981878",
+    "project_id": "digi-harmoni",
+    "storage_bucket": "digi-harmoni.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939975981878:android:aa25ea51af95050866d197",
+        "android_client_info": {
+          "package_name": "com.example.digi_harmoni"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4pPVqUabJmseuxyTCOeY6IIJJF-wMDC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
