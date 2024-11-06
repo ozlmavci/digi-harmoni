@@ -62,6 +62,7 @@ class _GameDetailState extends State<GameDetail> {
             startTimer(); // Yeni soru için zamanlayıcıyı başlat
             if (currentQuestionIndex >= widget.questions.length) {
               _isCompleted = true;
+              _timer?.cancel(); // Oyun bitince sayaç durdur
               saveAchievement(); // Firestore'a başarıyı kaydet
             }
           } else {
@@ -129,49 +130,50 @@ class _GameDetailState extends State<GameDetail> {
                 ],
               ),
             ),
-            // Sayaç
-            Container(
-              child: Center(
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(0.2),
+            // Sayaç sadece oyunda görünsün
+            if (!_isCompleted && wrongAttempts < 3)
+              Container(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white.withOpacity(0.2),
+                              ),
                             ),
-                          ),
-                          // Süreye göre azalan daire
-                          Container(
-                            width: 120,
-                            height: 120,
-                            child: CircularProgressIndicator(
-                              value: remainingTime / 30,
-                              backgroundColor: Colors.transparent,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            // Süreye göre azalan daire
+                            Container(
+                              width: 120,
+                              height: 120,
+                              child: CircularProgressIndicator(
+                                value: remainingTime / 30,
+                                backgroundColor: Colors.transparent,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
                             ),
-                          ),
-                          // Süre sayısı
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5.0),
-                            child: Text(
-                              '$remainingTime',
-                              style: TextStyle(fontSize: 36, color: Colors.white),
+                            // Süre sayısı
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: Text(
+                                '$remainingTime',
+                                style: TextStyle(fontSize: 36, color: Colors.white),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
             Expanded(
               child: Center(
                 child: _isCompleted
@@ -192,6 +194,24 @@ class _GameDetailState extends State<GameDetail> {
                           SizedBox(height: 20),
                           Text(
                             'Süreniz doldu. Oyun bitti!',
+                            style: TextStyle(fontSize: 24, color: Colors.white),
+                          ),
+                        ],
+                      )
+                    else if (wrongAttempts >= 3)
+                      Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.red,
+                            ),
+                            padding: EdgeInsets.all(20),
+                            child: Icon(Icons.close, color: Colors.white, size: 50),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Başka hakkınız kalmadı. Oyun bitti!',
                             style: TextStyle(fontSize: 24, color: Colors.white),
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_harmoni/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'profile_detail.dart';
@@ -12,7 +13,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final firebaseAuth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
 
-  String profileImageUrl = 'assets/images/profile.jpg';
+  String profileImageUrl = 'assets/images/digiharmoni-logo.png';
   String name = 'Yükleniyor...';
   String city = 'Yükleniyor...';
   String birthDate = 'Yükleniyor...';
@@ -29,15 +30,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> loadUserData() async {
     try {
-      // Şu anki kullanıcıyı alıyor
       User? user = firebaseAuth.currentUser;
 
       if (user != null) {
-        // Firestore'dan kullanıcı verilerini çekme
-        DocumentSnapshot userDoc = await firestore.collection('Users').doc(user.uid).get();
+        DocumentSnapshot userDoc =
+        await firestore.collection('Users').doc(user.uid).get();
 
         if (userDoc.exists) {
-          // Firestore'dan gelen verileri atama
           setState(() {
             name = userDoc['fullname'];
             city = userDoc['city'];
@@ -54,6 +53,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  void _signOut() async {
+    await firebaseAuth.signOut();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => LoginScreen()), // LoginScreen'e yönlendir
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +70,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              // Profil düzenleme sayfasına git
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ProfileDetailScreen()),
@@ -76,7 +81,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Profil bilgileri
             Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -109,8 +113,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 20),
-
-            // Rozetler ve Başarımlar
             Container(
               padding: EdgeInsets.all(20),
               width: double.infinity,
@@ -146,9 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }).toList(),
                   )
                       : Text('Henüz kazanılmış rozet yok'),
-
                   SizedBox(height: 20),
-
                   Text(
                     'Kazanılan Başarımlar',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -176,6 +176,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
+            SizedBox(height: 30),
+
+            // Çıkış Butonu
+            ElevatedButton(
+              onPressed: _signOut,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.logout, // Çıkış ikonu
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 10), // İkon ile yazı arasında boşluk
+                  Text(
+                    'Çıkış Yap',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+
           ],
         ),
       ),

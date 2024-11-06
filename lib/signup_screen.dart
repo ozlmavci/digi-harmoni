@@ -97,7 +97,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
               // Cinsiyet seçimi dropdown
               DropdownButtonFormField<String>(
-                dropdownColor: Colors.black,
+                dropdownColor: Color(0xFF080E2D),
                 value: selectedGender,
                 decoration: InputDecoration(
                   labelText: 'Cinsiyet',
