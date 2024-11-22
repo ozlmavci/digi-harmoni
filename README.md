@@ -92,6 +92,6 @@ Firebase servisini projeye entegre etmek için aşağıdaki adımları izleyin:
 ## İletişim
 Herhangi bir sorunuz, öneriniz veya geri bildiriminiz için benimle iletişime geçebilirsiniz:
 
-- **GitHub:** [Kullanıcı Adınız](https://github.com/ozlemavci)
-- **LinkedIn:** [LinkedIn Profiliniz](https://www.linkedin.com/in/ozlem-avci)
+- **GitHub:** [ozlmavci](https://github.com/ozlmavci)
+- **LinkedIn:** [Özlem Avcı](https://www.linkedin.com/in/ozlem-avci)
 
